@@ -69,7 +69,7 @@ void ChatDialog::gotReturnPressed() {
   qDebug() << "FIX: send message to other peers: " << textline->text();
   textview->append(textline->text());
 
-  socket->send(textline->text());
+  socket->send(socket->cur_port, textline->text());
 
   // Clear the textline to get ready for the next input message.
   textline->clear();
@@ -102,14 +102,14 @@ bool NetSocket::bind() {
   return false;
 }
 
-void NetSocket::send(QString msg) {
+void NetSocket::send(quint16 port, QString msg) {
   // try to send the message to my own port.
   QVariantMap qvMap;
   qvMap.insert("ChatText", msg);
   QByteArray q_byte;
   QDataStream q_data_stream(&q_byte, QIODevice::WriteOnly);
   q_data_stream << qvMap;
-  writeDatagram(q_byte, QHostAddress::LocalHost, socket->cur_port);
+  writeDatagram(q_byte, QHostAddress::LocalHost, port);
 }
 
 int main(int argc, char **argv) {

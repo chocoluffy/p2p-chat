@@ -14,7 +14,7 @@ class NetSocket : public QUdpSocket {
   QMap<QString, QVariant> serialized_instance;
 
   NetSocket();
-  void send(QString msg);
+  void send(quint16 port, QString msg);
 
   // Bind this socket to a P2Papp-specific default port.
   bool bind();
