@@ -3,10 +3,11 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = hello
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += network
+QT += widgets
 
 # Input
 HEADERS += main.hh

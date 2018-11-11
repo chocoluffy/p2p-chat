@@ -2,37 +2,43 @@
 #define P2PAPP_MAIN_HH
 
 #include <QDialog>
-#include <QTextEdit>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QUdpSocket>
 
-class ChatDialog : public QDialog
-{
-	Q_OBJECT
+class NetSocket : public QUdpSocket {
+  Q_OBJECT
 
-public:
-	ChatDialog();
+ public:
+  int cur_port;
+  QMap<QString, QVariant> serialized_instance;
 
-public slots:
-	void gotReturnPressed();
+  NetSocket();
+  void send(QString msg);
 
-private:
-	QTextEdit *textview;
-	QLineEdit *textline;
+  // Bind this socket to a P2Papp-specific default port.
+  bool bind();
+
+ private:
+  int myPortMin, myPortMax;
 };
 
-class NetSocket : public QUdpSocket
-{
-	Q_OBJECT
 
-public:
-	NetSocket();
+class ChatDialog : public QDialog {
+  Q_OBJECT
 
-	// Bind this socket to a P2Papp-specific default port.
-	bool bind();
+ public:
+  ChatDialog();
 
-private:
-	int myPortMin, myPortMax;
+ public slots:
+  void gotReturnPressed();
+  void recvMessage();
+
+ private:
+  NetSocket *socket;
+  QTextEdit *textview;
+  QLineEdit *textline;
 };
 
-#endif // P2PAPP_MAIN_HH
+
+#endif  // P2PAPP_MAIN_HH
